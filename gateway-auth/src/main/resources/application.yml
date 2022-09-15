@@ -1,0 +1,74 @@
+security.enable-csrf: false
+
+server:
+  port: 8080
+  #ervlet:
+    #context-path: /gateway
+  
+spring:
+  application:
+    name: gateway
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost/db_nutritionapi?createDatabaseIfNotExist=true&serverTimezone=America/Sao_Paulo&useSSl=false&allowPublicKeyRetrieval=true&sslMode=DISABLED
+    username: root
+    password: root
+
+  jackson:
+    data-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Brazil/East
+
+  jpa:
+    hibernate.ddl-auto: update
+    properties.hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
+    database: mysql
+    generate-ddl: true
+    show-sql: true
+
+  jmx:
+    enabled: false
+  main:
+    web-application-type: reactive
+    allow-bean-definition-overriding: true
+  cloud:
+    gateway:
+      routes:
+      - id: nutritionist
+        uri: http://localhost:8082/
+        predicates:
+        - Path=/nutritionist/**
+      - id: user
+        uri: http://localhost:8083/
+        predicates:
+        - Path=/user/**
+      - id: bookkeeper
+        uri: http://localhost:8084/
+        predicates:
+        - Path=/bookkeeper/**
+      - id: gateway
+        uri: http://localhost:8080/
+        predicates:
+        - Path=/auth/**
+          
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: gateway, health, info
+  info:
+    build:
+      enabled: true
+    env:
+      enabled: true
+
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8081/eureka/
+  instance:
+    hostname: localhost

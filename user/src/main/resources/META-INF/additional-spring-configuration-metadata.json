@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "eureka.instance.prefer-ip-adderss",
+    "type": "java.lang.String",
+    "description": "A description for 'eureka.instance.prefer-ip-adderss'"
+  },
+  {
+    "name": "eureka.client.fetcg-registry",
+    "type": "java.lang.String",
+    "description": "A description for 'eureka.client.fetcg-registry'"
+  }
+]}
